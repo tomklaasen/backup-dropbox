@@ -1,0 +1,6 @@
+[dropbox]
+token = YOUR_DROPBOX_ACCESS_TOKEN
+
+
+[backup]
+localdirectory = /tmp
