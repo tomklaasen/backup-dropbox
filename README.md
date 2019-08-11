@@ -11,6 +11,10 @@ This script does exactly that.
 
 Clone this git repository.
 
+## Configuration
+
+Copy `config.ini.example` to `config.ini`, and change the values in that file to your preferences. Don't forget to add your Dropbox authentication token.
+
 ## Running
 
 `python main.py`
