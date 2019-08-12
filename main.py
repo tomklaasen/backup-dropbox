@@ -74,7 +74,7 @@ def main():
             logging.error(rootdir, 'is not a folder on your filesystem')
             sys.exit(1)
 
-        dbx = dropbox.Dropbox(args.token)
+        dbx = dropbox.Dropbox(token)
 
         logging.info('Connected!')
 
