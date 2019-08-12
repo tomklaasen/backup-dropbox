@@ -115,13 +115,13 @@ def main():
                                 logging.debug("Downloading %s" % source)
                                 dbx.files_download_to_file(target, source)
                                 modTime = time.mktime(md.server_modified.timetuple())
-                                os.uTime(target, (modTime, modTime))
+                                os.utime(target, (modTime, modTime))
                             else:
                                 logging.debug("Keeping current version")
                                 if (md.server_modified != local_modified):
                                     logging.debug("updating modification time")
                                     modTime = time.mktime(md.server_modified.timetuple())
-                                    os.uTime(target, (modTime, modTime))
+                                    os.utime(target, (modTime, modTime))
                                 files_checked = files_checked + 1
 
                         else:
@@ -133,7 +133,7 @@ def main():
                             logging.debug("Downloading %s" % source)
                             dbx.files_download_to_file(target, source)
                             modTime = time.mktime(md.server_modified.timetuple())
-                            os.uTime(target, (modTime, modTime))
+                            os.utime(target, (modTime, modTime))
                 elif isinstance(md, dropbox.files.FolderMetadata):
                     logging.debug("We have a folder!")
                     target = rootdir + os.path.sep + current_folder + os.path.sep + file
