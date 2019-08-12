@@ -59,7 +59,6 @@ def main():
             sys.exit(2)
 
         folder = args.folder
-        rootdir = os.path.expanduser(args.rootdir)
 
         config = ConfigParser.ConfigParser()
         config.read("config.ini")
