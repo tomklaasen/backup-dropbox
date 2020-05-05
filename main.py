@@ -131,9 +131,14 @@ def main():
                             while '//' in source:
                                 source = source.replace('//', '/')
                             logging.debug("Downloading %s" % source)
-                            dbx.files_download_to_file(target, source)
-                            modTime = time.mktime(md.server_modified.timetuple())
-                            os.utime(target, (modTime, modTime))
+                            try: 
+                                dbx.files_download_to_file(target, source)
+                                modTime = time.mktime(md.server_modified.timetuple())
+                                os.utime(target, (modTime, modTime))
+                            except Exception:
+                                logging.exception("While handling %s/%s :", current_folder, current_file)
+                                logging.error("folders_checked = %i; files_checked = %i; files_downloaded = %i", folders_checked, files_checked, files_downloaded)
+    
                 elif isinstance(md, dropbox.files.FolderMetadata):
                     logging.debug("We have a folder!")
                     target = rootdir + os.path.sep + current_folder + os.path.sep + file
