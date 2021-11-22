@@ -7,7 +7,7 @@ from __future__ import print_function
 
 import logging
 import logging.config
-import ConfigParser
+import configparser
 import yaml
 import argparse
 import contextlib
@@ -60,7 +60,7 @@ def main():
 
         folder = args.folder
 
-        config = ConfigParser.ConfigParser()
+        config = configparser.ConfigParser()
         config.read("config.ini")
         token = config.get("dropbox", "token")
         rootdir = config.get("backup", "localdirectory")
