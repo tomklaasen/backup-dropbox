@@ -13,7 +13,7 @@ import argparse
 import contextlib
 import datetime
 import os
-import six
+#import six
 import sys
 import time
 import unicodedata
@@ -63,6 +63,9 @@ def main():
         config = configparser.ConfigParser()
         config.read("config.ini")
         token = config.get("dropbox", "token")
+        app_key = config.get("dropbox", "app_key")
+        secret = config.get("dropbox", "secret")
+        refresh_token = config.get("dropbox", "refresh_token")
         rootdir = config.get("backup", "localdirectory")
 
         logging.info('Dropbox folder name: %s', folder)
@@ -74,7 +77,8 @@ def main():
             logging.error(rootdir, 'is not a folder on your filesystem')
             sys.exit(1)
 
-        dbx = dropbox.Dropbox(token)
+        dbx = dropbox.Dropbox(app_key = app_key, app_secret = secret, oauth2_refresh_token = refresh_token)
+        #dbx = dropbox.Dropbox(token)
 
         logging.info('Connected!')
 
@@ -188,7 +192,7 @@ def list_folder(dbx, folder, subfolder):
 
                 
     except dropbox.exceptions.ApiError as err:
-        logging.warn('Folder listing failed for %s -- assumed empty: %s', path, err)
+        logging.warning('Folder listing failed for %s -- assumed empty: %s', path, err)
         return {}
     else:
         return rv

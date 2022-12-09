@@ -1,5 +1,11 @@
 [dropbox]
 token = YOUR_DROPBOX_ACCESS_TOKEN
+app_key = YOUR_APP_KEY
+secret = YOUR_SECRET
+
+# For refresh token, see https://www.codemzy.com/blog/dropbox-long-lived-access-refresh-token
+refresh_token = YOUR_REFRESH_TOKEN 
+
 
 
 [backup]
