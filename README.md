@@ -9,7 +9,11 @@ This script does exactly that.
 
 ## Installation
 
-Clone this git repository.
+Clone this git repository and install the dependencies:
+
+```
+pip install -r requirements.txt
+```
 
 ## Configuration
 
