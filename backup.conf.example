@@ -1,0 +1,7 @@
+# Logging (optional)
+LOG_FILE=""               # e.g. "/path/to/cron.log"
+LOG_MAX_SIZE_KB="10240"   # rotate when log exceeds this size (default 10 MB)
+LOG_KEEP="5"              # number of rotated files to keep
+
+# Healthchecks.io (optional)
+HC_PING_URL=""            # e.g. "https://hc-ping.com/your-uuid-here"

@@ -163,6 +163,9 @@ def main():
     except Exception:
         logging.exception("While handling %s/%s :", current_folder, current_file)
         logging.error("folders_checked = %i; files_checked = %i; files_downloaded = %i", folders_checked, files_checked, files_downloaded)
+        sys.exit(1)
+
+    logging.info("Backup complete: folders_checked = %i; files_checked = %i; files_downloaded = %i", folders_checked, files_checked, files_downloaded)
 
 
 def list_folder(dbx, folder, subfolder):
