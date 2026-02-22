@@ -15,7 +15,22 @@ Clone this git repository.
 
 Copy `config.ini.example` to `config.ini`, and change the values in that file to your preferences. Don't forget to add your Dropbox authentication token.
 
+Copy `backup.conf.example` to `backup.conf` and optionally configure:
+- `LOG_FILE` — path to the cron log file (enables log rotation)
+- `LOG_MAX_SIZE_KB` — rotate when the log exceeds this size (default 10 MB)
+- `LOG_KEEP` — number of rotated log files to keep (default 5)
+- `HC_PING_URL` — [Healthchecks.io](https://healthchecks.io) ping URL for uptime monitoring
+
 ## Running
 
 `python main.py`
 
+### Cron
+
+To run daily as a cron job:
+
+```
+10 2 * * * /path/to/backup.sh
+```
+
+`backup.sh` handles log rotation and sends start/success/fail pings to Healthchecks.io.
