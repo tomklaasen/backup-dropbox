@@ -9,11 +9,7 @@ This script does exactly that.
 
 ## Installation
 
-Clone this git repository and install the dependencies:
-
-```
-pip install -r requirements.txt
-```
+Clone this git repository. The first run of `backup.sh` will automatically create a virtual environment and install dependencies.
 
 ## Configuration
 
@@ -27,7 +23,15 @@ Copy `backup.conf.example` to `backup.conf` and optionally configure:
 
 ## Running
 
-`python main.py`
+```
+./backup.sh
+```
+
+Or directly via the venv (after the first `backup.sh` run):
+
+```
+.venv/bin/python3 main.py
+```
 
 ### Cron
 

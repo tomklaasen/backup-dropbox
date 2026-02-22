@@ -58,9 +58,17 @@ echo "=== Dropbox backup started at $(date) ==="
 
 hc_ping start
 
+# --- Virtual environment ---
+if [[ ! -d "$SCRIPT_DIR/.venv" ]]; then
+    echo "Creating virtual environment..."
+    python3 -m venv "$SCRIPT_DIR/.venv"
+    echo "Installing dependencies..."
+    "$SCRIPT_DIR/.venv/bin/pip" install -r "$SCRIPT_DIR/requirements.txt"
+fi
+
 # Run the backup
 cd "$SCRIPT_DIR"
-python3 "$SCRIPT_DIR/main.py" --default && rc=0 || rc=$?
+"$SCRIPT_DIR/.venv/bin/python3" "$SCRIPT_DIR/main.py" && rc=0 || rc=$?
 
 summary=$(tail -5 "$LOG_FILE" 2>/dev/null || echo "exit code $rc")
 
