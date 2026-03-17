@@ -12,9 +12,34 @@ import sys
 import time
 
 import dropbox
+import requests
 
 
 BLOCK_SIZE = 4 * 1024 * 1024  # 4 MB
+MAX_RETRIES = 3
+RETRY_BACKOFF = [5, 30, 120]  # seconds between retries
+
+TRANSIENT_ERRORS = (
+    requests.exceptions.ConnectionError,
+    requests.exceptions.Timeout,
+    ConnectionError,
+    TimeoutError,
+)
+
+
+def with_retry(func, *args, **kwargs):
+    """Call func with retries on transient network errors."""
+    for attempt in range(MAX_RETRIES + 1):
+        try:
+            return func(*args, **kwargs)
+        except TRANSIENT_ERRORS as e:
+            if attempt < MAX_RETRIES:
+                wait = RETRY_BACKOFF[attempt]
+                logging.warning("Transient error (attempt %d/%d), retrying in %ds: %s",
+                                attempt + 1, MAX_RETRIES, wait, e)
+                time.sleep(wait)
+            else:
+                raise
 
 
 parser = argparse.ArgumentParser(description='Sync Dropbox content to a specified folder')
@@ -90,7 +115,12 @@ def main():
 
             folders_checked = folders_checked + 1
 
-            listing = list_folder(dbx, current_folder, '')
+            try:
+                listing = list_folder(dbx, current_folder, '')
+            except Exception:
+                logging.exception("Failed to list folder %s, skipping:", current_folder)
+                errors.append("%s: folder listing failed" % current_folder)
+                continue
 
             for file in listing:
                 current_file = file
@@ -118,12 +148,12 @@ def main():
                                 else:
                                     logging.debug("Content hash differs, downloading latest version")
                                     logging.debug("Downloading %s" % source)
-                                    dbx.files_download_to_file(target, source)
+                                    with_retry(dbx.files_download_to_file, target, source)
                                     files_downloaded = files_downloaded + 1
                             else:
                                 logging.debug("File doesn't exist locally, downloading")
                                 logging.debug("Downloading %s" % source)
-                                dbx.files_download_to_file(target, source)
+                                with_retry(dbx.files_download_to_file, target, source)
                                 files_downloaded = files_downloaded + 1
 
                     elif isinstance(md, dropbox.files.FolderMetadata):
@@ -176,14 +206,14 @@ def list_folder(dbx, folder, subfolder):
     path = path.rstrip('/')
     try:
         with stopwatch('list_folder'):
-            res = dbx.files_list_folder(path, False)
+            res = with_retry(dbx.files_list_folder, path, False)
             for entry in res.entries:
                 rv[entry.name] = entry
 
             while res.has_more:
                 logging.info("More entries for folder %s" % path)
                 cursor = res.cursor
-                res = dbx.files_list_folder_continue(cursor)
+                res = with_retry(dbx.files_list_folder_continue, cursor)
                 for entry in res.entries:
                     rv[entry.name] = entry
 
