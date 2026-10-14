@@ -62,3 +62,12 @@ To run daily as a cron job:
 ```
 
 `backup.sh` handles log rotation and sends start/success/fail pings to Healthchecks.io.
+
+## Tests
+
+`test_main.py` runs the backup against an in-memory fake Dropbox (full scan, incremental runs, modifications,
+deletions, failed downloads, cursor reset, `--verify`, missing backup drive):
+
+```
+.venv/bin/python3 test_main.py
+```
