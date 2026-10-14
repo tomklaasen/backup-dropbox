@@ -10,3 +10,13 @@ refresh_token = YOUR_REFRESH_TOKEN
 
 [backup]
 localdirectory = /tmp
+
+# Optional. Where the sync cursor is kept (default: <localdirectory>/.dropbox-backup-state)
+# statedirectory = /tmp/.dropbox-backup-state
+
+# Optional. Where previous versions of changed or deleted files are moved
+# (default: <localdirectory>/.dropbox-backup-archive). Keep it on the same drive.
+# archivedirectory = /tmp/.dropbox-backup-archive
+
+# Optional. Do a full scan every N days to catch local damage (default: 7)
+# fullscandays = 7
